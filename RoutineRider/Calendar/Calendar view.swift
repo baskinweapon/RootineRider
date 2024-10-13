@@ -2,10 +2,11 @@ import SwiftUI
 import _SwiftData_SwiftUI
 
 struct CalendarView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.modelContext) private var modelContext
     @Query var finishedTasks: [DoneTaskData]
     
-    @State private var selectedDate = Date()
+    @State private var selectedDate: CalendarCell = CalendarCell(isPresented: false, date: Date())
     
     private let calendar = Calendar.current
     
@@ -48,7 +49,6 @@ struct CalendarView: View {
                                     let startDate = startDayOfWeek(for: time.year!, month: time.month!)
                                     let totalCells = daysInMonth(for: monthStartDate).count + startDate! - 1 // Вычисляем общее количество ячеек, включая пустые
                                     let columns = Array(repeating: GridItem(.fixed(50), spacing: 2), count: 7)
-                                            
                                             LazyVGrid(columns: columns, spacing: 4) {
                                                 // Добавляем пустые ячейки для того, чтобы первый день совпал
                                                 ForEach(0..<totalCells, id: \.self) { index in
@@ -57,18 +57,17 @@ struct CalendarView: View {
                                                         Text("")
                                                             .frame(width: 48, height: 48)
                                                     } else {
-                                                        let day = monthStartDate.addingTimeInterval(TimeInterval(index * 86400))
+                                                        let day = monthStartDate.addingTimeInterval(TimeInterval((index - (startDate! - 1)) * 86400))
+                                                        // check today
                                                         if (Calendar.current.isDateInToday(day)) {
                                                             // Отображаем номер дня
-                                                            CalendarCellView(date: day, tasksCompleted:tasksForDate(tasks: finishedTasks, date: day).count).aspectRatio(1, contentMode: .fit)
+                                                            CalendarCellView(date: day, tasksCompleted:tasksForDate(tasks: finishedTasks, date: day).count, isSheetPresented: $selectedDate).aspectRatio(1, contentMode: .fit)
                                                                 .frame(width: 48, height: 48).overlay(
-                                                                    Rectangle().stroke(Color.black.opacity(0.6), lineWidth: 1)
-    //                                                                RoundedRectangle(cornerRadius: 4)
-    //                                                                    .stroke(Color.black.opacity(0.6), lineWidth: 1)
+                                                                    Rectangle().stroke(colorScheme != .dark ? Color.black.opacity(0.6) : Color.white.opacity(0.6), lineWidth: 1)
                                                                 )
                                                         } else {
                                                             // Отображаем номер дня
-                                                            CalendarCellView(date: day, tasksCompleted:tasksForDate(tasks: finishedTasks, date: day).count).aspectRatio(1, contentMode: .fit)
+                                                            CalendarCellView(date: day, tasksCompleted:tasksForDate(tasks: finishedTasks, date: day).count, isSheetPresented: $selectedDate).aspectRatio(1, contentMode: .fit)
                                                                 .frame(width: 48, height: 48)
                                                         }
                                                     }
@@ -79,6 +78,8 @@ struct CalendarView: View {
                             }
                         }
                     }.defaultScrollAnchor(.center).navigationTitle("Calendar")
+                }.sheet(isPresented: $selectedDate.isPresented) {
+                    DayOverviewView(date: $selectedDate.date)
                 }
             }
         }
@@ -112,13 +113,6 @@ struct CalendarView: View {
         return tasks.filter { task in
             calendar.isDate(task.dateTimeFinihed!, inSameDayAs: date)
         }
-    }
-    
-    // Форматирование выбранной даты
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        return formatter.string(from: date)
     }
     
     // Возвращает список дней в данном месяце

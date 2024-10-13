@@ -16,7 +16,8 @@ struct RoutineRiderApp: App {
             DoneTaskData.self,
             TempalteTaskData.self,
             JournalDayData.self,
-            TimeTracker.self,
+            ChallengeData.self,
+            AppData.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -28,7 +29,7 @@ struct RoutineRiderApp: App {
     }()
     
     var body: some Scene {
-        WindowGroup {            
+        WindowGroup {
             ContentView().modelContainer(sharedModelContainer)
         }
     }

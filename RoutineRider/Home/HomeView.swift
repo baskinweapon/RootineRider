@@ -8,64 +8,24 @@ struct HomeView: View {
     @State private var showAddTaskSheet: Bool = false
     @State private var showTemplatesSheet = false
     
+    @State private var isHalfScreen = false
+    
     var body: some View {
-        NavigationView {
+//        NavigationView {
             VStack {
-                HStack {
-                    let todoItems = finishTasks.filter{ $0.IsTodayFinished() }.count
-                    ForEach(0..<6) { _ in
-                        FractalPattern(iteraction: CGFloat(todoItems)).frame(height: 44)
-                    }
-           
-                }
-            
-                // Лист с задачами
-                List {
-                    ForEach(TodoItems.sorted(by: {$0.isCompleted < !$1.isCompleted})) { task in
-                        HStack {
-                            Text(task.title)
-                                .font(.headline)
-                            Spacer()
-                            Text("⏱️ \(task.duration)min").font(.subheadline)
-                            if task.isCompleted {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
-                                    .imageScale(.large)
-                            } else {
-                                Image(systemName: "circle")
-                                    .foregroundColor(.gray)
-                                    .imageScale(.large)
-                            }
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            toggleTaskCompletion(task: task)
-                        }
-                    }
-                    .onDelete(perform: deleteTask)
-                }
-                .navigationTitle("Today Tasks")
+//                SwipeableBottomPanelWithTabView() // new logic
                 
-                Spacer()
+                TodayTasksView(categories: "All task")
                 
-                var fullTime = TodoItems.filter{ $0.isCompleted }.reduce(0) { $0 + $1.duration }
-                CompactTaskManagerView(showTemplatesSheet: $showTemplatesSheet, showAddTaskSheet: $showAddTaskSheet, tasksCompleted: TodoItems.filter{ $0.isCompleted }.count, timeSpent: fullTime)
-                // Компактные кнопки снизу
-//                HStack(spacing: 40) {
-//                    IconButtonSmall(title: "Добавить", imageName: "plus.circle.fill", color: Color.blue, action: addTask)
-//                    IconButtonSmall(title: "Templates", imageName: "doc.text.fill", color: Color.orange) {
-//                        showTemplatesSheet.toggle()
-//                    }
-//                }
-                .padding(.bottom, 10)
-                .padding(.horizontal)
+                CompactTaskManagerView(showTemplatesSheet: $showTemplatesSheet, showAddTaskSheet: $showAddTaskSheet)
+                    .padding(.horizontal).padding(.bottom, 6)
                 .sheet(isPresented: $showTemplatesSheet) {
-                    TemplatesView()
+                    HalfSheetTemplatesView(isHalfScreen: $isHalfScreen).presentationDetents([.height(120*2+100), .large]).presentationDragIndicator(.automatic)
                 }.sheet(isPresented: $showAddTaskSheet) {
                     AddTaskSheet()
                 }
             }
-        }
+//        }
     }
     
     // Функция добавления задачи
@@ -80,7 +40,7 @@ struct HomeView: View {
                 TodoItems[index].isCompleted.toggle()
                 if (TodoItems[index].isCompleted) {
                     let task = TodoItems[index]
-                    let finishedTask = DoneTaskData(title: task.title, timeCreated: task.timeCreated, timeFinihed: Date())
+                    let finishedTask = DoneTaskData(title: task.title, timeCreated: task.timeCreated, timeFinihed: Date(), tag: task.tag ?? "", emoji: task.emoji ?? "")
                     modelContext.insert(finishedTask)
                 } else if (!TodoItems[index].isCompleted) {
                     deleteAlreadyFinishedTask(task: task)

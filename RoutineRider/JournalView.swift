@@ -9,41 +9,40 @@ struct JournalView: View {
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        
-        if (journals.isEmpty) {
-            var _ = AddJournal()
-        }
         ZStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    ForEach(0..<journals.count) { index in
+                    ForEach(journals) { journal in
                         ZStack {
                             VStack {
-                                Text(dateString(from: journals[index].date))
+                                Text(dateString(from: journal.date))
                                     .font(.headline)
                                     .padding(.top, 20)
                                 
-                                TextEditor(text: Binding(get: { journals[index].text }, set: {
+                                TextEditor(text: Binding(get: { journal.text }, set: {
                                     newValue in
-                                    journals[index].text = newValue
+                                    journal.text = newValue
                                 }))
                                     .padding()
                                     .padding([.leading, .trailing], 0)
-                                    .tag(index)
                                     .submitLabel(.go).onSubmit {
                                         hide()
                                     }.focused($isFocused)
-                                    .autocorrectionDisabled()
                             }
                         }.frame(width: UIScreen.screenWidth - 40)
                     }
-                }
+                }.scrollIndicators(.hidden)
                 .scrollTargetLayout()
             }.defaultScrollAnchor(.trailing)
             .scrollTargetBehavior(.viewAligned)
             .safeAreaPadding(.horizontal, 20)
             
-            ButtonUpsideKeyboardView().position(x: UIScreen.screenWidth / 2, y: UIScreen.screenHeight - 200)
+//            ButtonUpsideKeyboardView().position(x: UIScreen.screenWidth / 2, y: UIScreen.screenHeight - 200)
+        }.onAppear() {
+            if !Calendar.current.isDate(journals.last!.date, inSameDayAs: Date()) {
+                modelContext.insert(JournalDayData(date: Date(), text: ""))
+                try? modelContext.save()
+            }
         }
     }
     
@@ -51,11 +50,6 @@ struct JournalView: View {
         isFocused = false
     }
         
-    
-    func AddJournal() {
-        modelContext.insert(JournalDayData(date: Date(), text: ""))
-    }
-    
     func dateString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .long

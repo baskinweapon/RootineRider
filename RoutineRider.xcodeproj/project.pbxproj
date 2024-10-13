@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C51DC0342C9838DA00442433 /* ChatGPTSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C51DC0332C9838DA00442433 /* ChatGPTSwift */; };
+		C573E3892CB70412008CCC81 /* MijickCalendarView in Frameworks */ = {isa = PBXBuildFile; productRef = C573E3882CB70412008CCC81 /* MijickCalendarView */; };
 		C5A2A4702C8EDEA500E127EE /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = C5A2A46F2C8EDEA500E127EE /* OpenAI */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C573E3892CB70412008CCC81 /* MijickCalendarView in Frameworks */,
+				C51DC0342C9838DA00442433 /* ChatGPTSwift in Frameworks */,
 				C5A2A4702C8EDEA500E127EE /* OpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +123,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				C573E3872CB70407008CCC81 /* PBXTargetDependency */,
+				C51DC0322C9838D300442433 /* PBXTargetDependency */,
+				C51DC0302C9838CE00442433 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C5DC790E2C7E02DA00E96B28 /* RoutineRider */,
@@ -208,6 +215,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C5A2A46B2C8EDD3A00E127EE /* XCRemoteSwiftPackageReference "OpenAI" */,
+				C51DC02E2C9838A600442433 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */,
+				C573E3852CB703DA008CCC81 /* XCRemoteSwiftPackageReference "CalendarView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C5DC790D2C7E02DA00E96B28 /* Products */;
@@ -270,6 +279,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C51DC0302C9838CE00442433 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C51DC02F2C9838CE00442433 /* OpenAI */;
+		};
+		C51DC0322C9838D300442433 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C51DC0312C9838D300442433 /* ChatGPTSwift */;
+		};
+		C573E3872CB70407008CCC81 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C573E3862CB70407008CCC81 /* MijickCalendarView */;
+		};
 		C5DC79202C7E02DC00E96B28 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C5DC790B2C7E02DA00E96B28 /* RoutineRider */;
@@ -582,6 +603,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C51DC02E2C9838A600442433 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alfianlosari/ChatGPTSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.3;
+			};
+		};
+		C573E3852CB703DA008CCC81 /* XCRemoteSwiftPackageReference "CalendarView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mijick/CalendarView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		C5A2A46B2C8EDD3A00E127EE /* XCRemoteSwiftPackageReference "OpenAI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MacPaw/OpenAI";
@@ -593,6 +630,31 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C51DC02F2C9838CE00442433 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C5A2A46B2C8EDD3A00E127EE /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
+		};
+		C51DC0312C9838D300442433 /* ChatGPTSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C51DC02E2C9838A600442433 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */;
+			productName = ChatGPTSwift;
+		};
+		C51DC0332C9838DA00442433 /* ChatGPTSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C51DC02E2C9838A600442433 /* XCRemoteSwiftPackageReference "ChatGPTSwift" */;
+			productName = ChatGPTSwift;
+		};
+		C573E3862CB70407008CCC81 /* MijickCalendarView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C573E3852CB703DA008CCC81 /* XCRemoteSwiftPackageReference "CalendarView" */;
+			productName = MijickCalendarView;
+		};
+		C573E3882CB70412008CCC81 /* MijickCalendarView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C573E3852CB703DA008CCC81 /* XCRemoteSwiftPackageReference "CalendarView" */;
+			productName = MijickCalendarView;
+		};
 		C5A2A46F2C8EDEA500E127EE /* OpenAI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C5A2A46B2C8EDD3A00E127EE /* XCRemoteSwiftPackageReference "OpenAI" */;

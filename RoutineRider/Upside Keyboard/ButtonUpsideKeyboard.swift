@@ -3,14 +3,8 @@ import Combine
 
 struct ButtonUpsideKeyboardView: View {
     @State private var keyboardHeight: CGFloat = 0
-    var chatViewModel: ChatViewModel
     
-    
-    init() {
-        self.chatViewModel = ChatViewModel()
-        self.chatViewModel.setupOpenAI()
-    }
-    
+
     var body: some View {
         VStack {
             // Кнопка, которая будет располагаться над клавиатурой

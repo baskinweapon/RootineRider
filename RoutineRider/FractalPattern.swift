@@ -8,22 +8,24 @@ struct FractalPattern: View {
     
     let date = Date()
     var iteraction: CGFloat = 1
+    var phases: CGFloat = 8
     
     var body: some View {
         TimelineView(.animation) {
                 let time = date.timeIntervalSince1970 -  $0.date.timeIntervalSince1970
                 
                 Rectangle()
-                    .aspectRatio(1, contentMode: .fit)
+//                    .aspectRatio(1, contentMode: .fit)
                     .colorEffect(ShaderLibrary.fractalPattern(
                         .boundingRect,
                         .float(-time),
                         .float(iteraction),
                         .float(repeatness),
-                        .float(phase)
+                        .float(phases)
                     ))
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
-            }
+//                    .offset(y: 35)
+//                    .clipShape(RoundedRectangle(cornerRadius: 24))
+        }.background(.black)
                 
     }
 }

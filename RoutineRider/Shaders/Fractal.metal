@@ -26,6 +26,7 @@ half3 palette(float t) {
     
     half3 finalColor = half3(0.0);
     vector_float2 uv0 = uv;
+    float alpha = 1;
     
     for(float i = 0.0; i < iterations; i++) {
         uv = fract(uv * repeatness) - 0.5; // repeat the space and center
@@ -33,12 +34,18 @@ half3 palette(float t) {
         float d = length(uv) * exp(-length(uv0));
         half3 col = palette(length(uv0) + i * .4 + time * .4); // half3(1.0, 2.0, 3.0);
         
-        d = sin(d * phase + time) / 8.;
+        d = sin(d * phase + time) / 6.;
         d = abs(d); // make it glow
         d = pow(0.01 / d, 1.2); // increase contrast
         
         finalColor += col * d;
+        
+        if ((finalColor.r + finalColor.g + finalColor.b) > 1) {
+            alpha = 1;
+        } else {
+            alpha = 0;
+        }
     }
     
-    return half4(finalColor, 1.);
+    return half4(finalColor, alpha);
 }

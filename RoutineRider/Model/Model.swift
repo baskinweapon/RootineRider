@@ -8,21 +8,32 @@
 import Foundation
 import SwiftData
 
+
+@Model
+final class AppData {
+    var needShowOnboarding: Bool
+    
+    init(needShowOnboarding: Bool) {
+        self.needShowOnboarding = needShowOnboarding
+    }
+}
+
 // task for today
 @Model
 final class TodayTaskData {
-//    var id: UUID
     var title: String
     var duration: Int
     var isCompleted: Bool
     var timeCreated: Date?
+    var tag: String?
+    var emoji: String?
     
-    init(title: String, timeCreated: Date?, duration: Int = 45, isCompleted: Bool = false) {
-//        self.id = UUID()
+    init(title: String, timeCreated: Date?, duration: Int = 45, isCompleted: Bool = false, emoji: String? = nil) {
         self.title = title
         self.isCompleted = isCompleted
         self.duration = duration
         self.timeCreated = timeCreated
+        self.emoji = emoji
     }
 }
 
@@ -35,14 +46,18 @@ final class DoneTaskData {
     var isCompleted: Bool
     var timeCreated: Date?
     var dateTimeFinihed: Date?
+    var tag: String?
+    var emoji: String?
     
-    init(title: String, timeCreated: Date?, timeFinihed: Date? = nil,  duration: Int = 45, isCompleted: Bool = false) {
+    init(title: String, timeCreated: Date?, timeFinihed: Date? = nil,  duration: Int = 45, isCompleted: Bool = false, tag: String? = nil, emoji: String? = nil) {
         self.id = UUID()
         self.title = title
         self.isCompleted = isCompleted
         self.durationTime = duration
         self.dateTimeFinihed = timeFinihed
         self.timeCreated = timeCreated
+        self.tag = tag
+        self.emoji = emoji
     }
     
     public func IsTodayFinished() -> Bool {
@@ -62,8 +77,10 @@ final class TempalteTaskData {
     var isCompleted: Bool
     var dateTimeFinihed: Date?
     var usedCount: Int?
+    var tag: String?
+    var emoji: String?
     
-    init(title: String, timeFinihed: Date? = nil, duration: Int, isCompleted: Bool = false, usedCount: Int = 0) {
+    init(title: String, timeFinihed: Date? = nil, duration: Int, isCompleted: Bool = false, usedCount: Int = 1) {
         self.id = UUID()
         self.title = title
         self.isCompleted = isCompleted
@@ -85,12 +102,15 @@ final class JournalDayData {
 }
 
 @Model
-final class TimeTracker {
-    var Date: Date
+class ChallengeData {
+    var startDate: Date
+    var endDate: Date
+    var workingDays: [String]
     
-    init(Date: Date) {
-        self.Date = Date
+    init(startDate: Date, endDate: Date, workingDays: [String]) {
+        self.startDate = startDate
+        self.endDate = endDate
+        self.workingDays = workingDays
     }
 }
-
 
